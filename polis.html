@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapido: Capstone Project SPA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            border-bottom-color: #f59e0b;
+            color: #d97706;
+        }
+        .sub-tab-button {
+            transition: all 0.3s ease;
+            background-color: #f1f5f9;
+        }
+        .sub-tab-button.active {
+            background-color: #f59e0b;
+            color: #ffffff;
+        }
+        .content-section, .sub-content-section {
+            display: none;
+        }
+        .content-section.active, .sub-content-section.active {
+            display: block;
+        }
+        .hypothesis-item {
+            cursor: pointer;
+        }
+        .hypothesis-item .hypothesis-metric {
+            display: none;
+            transition: all 0.3s ease;
+        }
+        .hypothesis-item.active .hypothesis-metric {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- 
+      Chosen Palette: Warm Neutrals (Gray, Amber, White) 
+      Application Structure Plan: A tabbed SPA (Overview, Market, Features, MVP). This non-linear, task-oriented structure is superior to mirroring the report, allowing users to explore strategic sections (like Market or MVP) independently. It translates a dense document into a digestible interactive application, using tabs as the primary navigation model. 
+      Visualization & Content Choices: [Overview: Stacked bar for revenue goal (Goal: Inform) -> Chart.js. Market: Donut for segments, sub-tabs for competitors (Goal: Compare) -> Chart.js, HTML/JS tabs. Features: Interactive tabs for each feature, with HTML/CSS mockups of user journeys (Goal: Organize/Explain) -> HTML/JS tabs. MVP: Interactive list for hypotheses (Goal: Inform) -> HTML/JS click-to-reveal. This structure avoids SVG/Mermaid and uses Chart.js and interactive HTML/JS to make the strategy and PRD explorable.] 
+      CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. 
+    -->
+
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-900">Rapido: A Strategic Pivot</h1>
+            <p class="text-lg text-gray-600">Interactive Strategy & Product Requirements</p>
+        </header>
+
+        <nav class="mb-8 border-b border-gray-300">
+            <div class="flex flex-wrap -mb-px space-x-4 sm:space-x-8">
+                <button class="tab-button active py-4 px-1 text-base sm:text-lg font-medium border-b-2 border-transparent hover:border-gray-400 hover:text-gray-700" data-tab="overview">
+                    Overview & Strategy
+                </button>
+                <button class="tab-button py-4 px-1 text-base sm:text-lg font-medium border-b-2 border-transparent hover:border-gray-400 hover:text-gray-700" data-tab="market">
+                    Market & Competitors
+                </button>
+                <button class="tab-button py-4 px-1 text-base sm:text-lg font-medium border-b-2 border-transparent hover:border-gray-400 hover:text-gray-700" data-tab="features">
+                    Key Features (PRD)
+                </button>
+                <button class="tab-button py-4 px-1 text-base sm:text-lg font-medium border-b-2 border-transparent hover:border-gray-400 hover:text-gray-700" data-tab="mvp">
+                    MVP & Metrics
+                </button>
+            </div>
+        </nav>
+
+        <main>
+            
+            <section id="overview-content" class="content-section active">
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-3">The Core Challenge</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl">
+                            Rapido faces a critical strategic fork: its core bike taxi business, while popular, is threatened by severe regulatory uncertainty. Simultaneously, its expansion into the cab and intercity bus markets pits it against entrenched, well-capitalized giants like Uber, Ola, and Redbus. This interactive report outlines a winning strategy to navigate this complex landscape by not just competing, but changing the game.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">The Winning Strategy: Our Guiding Principles</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            Our strategy is to pivot from a "bike taxi app" to an "all-in-one affordable travel app." We will win by focusing on three core pillars. This approach leverages our core strength (affordability) to de-risk our business and build a new, integrated value proposition.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-xl font-semibold text-amber-600 mb-2">1. Integrate</h3>
+                                <p class="text-gray-700">Become the single, seamless app for all ground transport: bikes, autos, cabs, and intercity buses. We will create a "one-stop shop" convenience that competitors cannot easily replicate.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-xl font-semibold text-amber-600 mb-2">2. Diversify</h3>
+                                <p class="text-gray-700">Actively de-risk our revenue from the volatile bike taxi segment. We will use our product to intelligently nudge users towards more stable verticals like autos and cabs, ensuring business continuity.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-xl font-semibold text-amber-600 mb-2">3. Own the Value Segment</h3>
+                                <p class="text-gray-700">Affordability is our brand and our weapon. We will position every new vertical (Cab, Bus) as the budget-friendly choice, leveraging our massive user base to win the price-sensitive "Bharat" commuter.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Core Business Goal: De-Risking Revenue</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            The primary business goal is to reduce our dependency on the at-risk bike taxi vertical. The chart below visualizes our 12-month target for diversifying our revenue mix, shifting a significant portion of revenue to more stable verticals like Auto, Cab, and new Bus offerings.
+                        </p>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="market-content" class="content-section">
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-3">Market & User Insights</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            Understanding our market and users is key to the "Integrate, Diversify, Own" strategy. Our research shows users are price-sensitive and "polygamous" with apps, using different services for bikes, cabs, and buses. This fragmentation is our opportunity. The chart shows the key market segments we operate in.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3 text-center">Target Market Segments</h3>
+                                <div class="chart-container h-80 max-h-[350px]">
+                                    <canvas id="marketChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">Key User Insights</h3>
+                                <ul class="space-y-3 list-disc list-inside text-gray-700">
+                                    <li><strong class="font-medium">Price is King:</strong> Our core 18-35yo users are extremely price-sensitive. Brand loyalty is secondary to cost savings.</li>
+                                    <li><strong class="font-medium">App Fatigue:</strong> Users hate juggling 3+ apps (Rapido, Uber, Redbus) to manage their travel.</li>
+                                    <li><strong class="font-medium">Regulatory Frustration:</strong> Bike bans cause significant user churn. Users feel abandoned and are forced to more expensive alternatives.</li>
+                                    <li><strong class="font-medium">Captain (Driver) Anxiety:</strong> Captains are worried about vehicle seizures and inconsistent income. They are open to diversifying.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-3">Competitive Landscape</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            We are not just a bike app anymore. As we expand, we face dominant incumbents in each vertical. Our strategy is not to beat them at their own game (e.g., premium cabs) but to change the game by integrating all services. Select a competitor to see our analysis.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button class="sub-tab-button active py-2 px-4 rounded-full text-sm font-medium" data-subtab="competitor-rapido">Our SWOT</button>
+                            <button class="sub-tab-button py-2 px-4 rounded-full text-sm font-medium" data-subtab="competitor-ola-uber">Uber & Ola</button>
+                            <button class="sub-tab-button py-2 px-4 rounded-full text-sm font-medium" data-subtab="competitor-redbus">Redbus / Abhibus</button>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                            <div id="competitor-rapido-content" class="sub-content-section active">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">Our Position (SWOT)</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <h4 class="font-semibold text-green-600">Strengths</h4>
+                                        <ul class="list-disc list-inside text-gray-700">
+                                            <li>Strong brand for Affordability</li>
+                                            <li>Deep penetration in Tier 2/3 cities</li>
+                                            <li>Massive, loyal user base</li>
+                                            <li>Large 2/3-wheeler driver network</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-red-600">Weaknesses</h4>
+                                        <ul class="list-disc list-inside text-gray-700">
+                                            <li>Existential regulatory risk</li>
+                                            <li>Late-mover in Cabs & Buses</li>
+                                            <li>Lower marketing budget than giants</li>
+                                            <li>"Bike-only" brand perception</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-blue-600">Opportunities</h4>
+                                        <ul class="list-disc list-inside text-gray-700">
+                                            <li>Become the "Super App" for affordable transport</li>
+                                            <li>Cross-sell bus/cab tickets to bike users</li>
+                                            <li>Integrate first/last-mile for intercity</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-yellow-600">Threats</h4>
+                                        <ul class="list-disc list-inside text-gray-700">
+                                            <li>Total bike taxi ban in key states</li>
+                                            <li>Price wars from Uber/Ola</li>
+                                            <li>Inability to build supply in new verticals</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="competitor-ola-uber-content" class="sub-content-section">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">Competitors: Uber & Ola</h3>
+                                <ul class="space-y-2">
+                                    <li><strong class="font-medium text-gray-900">Primary Market:</strong> Cabs & Autos (Intra-city).</li>
+                                    <li><strong class="font-medium text-green-600">Strengths:</strong> Dominant market share, strong "cab" brand, mature tech, large driver network.</li>
+                                    <li><strong class="font-medium text-red-600">Weaknesses:</strong> Higher price point, "cab-first" brand (bike/auto are secondary), less dominant in Tier 3.</li>
+                                    <li><strong class="font-medium text-amber-600">Our Approach:</strong> Do not compete on premium. Compete on price. Position our cabs as the "value" choice and leverage our bike users as an acquisition funnel.</li>
+                                </ul>
+                            </div>
+                            <div id="competitor-redbus-content" class="sub-content-section">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">Competitors: Redbus / Abhibus</h3>
+                                <ul class="space-y-2">
+                                    <li><strong class="font-medium text-gray-900">Primary Market:</strong> Intercity Bus Aggregation.</li>
+                                    <li><strong class="font-medium text-green-600">Strengths:</strong> Massive bus operator inventory, dominant market share, strong brand recall.</li>
+                                    <li><strong class="font-medium text-red-600">Weaknesses:</strong> Purely intercity. No solution for first/last-mile connection to/from the bus stop.</li>
+                                    <li><strong class="font-medium text-amber-600">Our Approach:</strong> Change the game. We will be the only app to offer an *integrated* journey: bike to the bus stop + bus ticket + auto to the final destination, all in one booking.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            
+            <section id="features-content" class="content-section">
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-3">Key Features & Personas</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            To execute our strategy, we will build three key new features. These features are designed to directly address the "Integrate, Diversify, and Own" pillars, targeting our key user personas. Click a feature to see its details and user journey.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Persona: Priya (The Student)</h3>
+                            <ul class="text-gray-700 space-y-1">
+                                <li><strong>Demographics:</strong> 20, college student, Tier 1 city.</li>
+                                <li><strong>JTBD:</strong> Get to college, meet friends, travel home to Tier 2 city for holidays.</li>
+                                <li><strong>Pain Points:</strong> Limited budget, frustrated by bike unavailability, hates juggling Rapido and Redbus for intercity trips.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Persona: Rohan (The Young Professional)</h3>
+                            <ul class="text-gray-700 space-y-1">
+                                <li><strong>Demographics:</strong> 26, sales exec, Tier 2 city.</li>
+                                <li><strong>JTBD:</strong> Commute to office, travel to client meetings, visit nearby cities for work.</li>
+                                <li><strong>Pain Points:</strong> Bike isn't "professional," cab costs add up, wastes time on multi-leg bookings.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button class="sub-tab-button active py-2 px-4 rounded-full text-sm font-medium" data-subtab="feature-1">1. Unified Intercity Journey Planner</button>
+                            <button class="sub-tab-button py-2 px-4 rounded-full text-sm font-medium" data-subtab="feature-2">2. Smart-Commute Mode Selector</button>
+                            <button class="sub-tab-button py-2 px-4 rounded-full text-sm font-medium" data-subtab="feature-3">3. Rapido Mobility Pass</button>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200 min-h-[400px]">
+                            
+                            <div id="feature-1-content" class="sub-content-section active">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">Feature 1: Unified Intercity Journey Planner</h3>
+                                <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full mb-3">Strategic Pillar: Integrate</span>
+                                <p class="text-gray-700 mb-4">Allows a user to book an entire end-to-end journey (e.g., Bike to bus stop + Intercity Bus ticket + Auto to final destination) in a single transaction. This creates a massive cross-sell opportunity and locks users into our ecosystem.</p>
+                                
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">User Journey (Priya):</h4>
+                                <div class="w-full max-w-md mx-auto bg-gray-50 border border-gray-300 rounded-lg shadow-md p-4">
+                                    <h5 class="font-bold text-center text-lg mb-2">Your Integrated Journey</h5>
+                                    <p class="text-sm text-center text-gray-600 mb-4">Hostel (Koramangala) → Home (Mysore)</p>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center space-x-3 p-3 bg-white rounded-lg border">
+                                            <span class="text-2xl">🚲</span>
+                                            <div>
+                                                <p class="font-semibold">First Mile: Bike to Bus Stop</p>
+                                                <p class="text-sm text-gray-600">Est. ₹60 • 15 min</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3 p-3 bg-white rounded-lg border">
+                                            <span class="text-2xl">🚌</span>
+                                            <div>
+                                                <p class="font-semibold">Main Journey: Bus to Mysore</p>
+                                                <p class="text-sm text-gray-600">Select Operator & Seat • ₹350</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3 p-3 bg-white rounded-lg border">
+                                            <span class="text-2xl">🛺</span>
+                                            <div>
+                                                <p class="font-semibold">Last Mile: Auto to Home</p>
+                                                <p class="text-sm text-gray-600">Est. ₹40 • 10 min</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 text-center">
+                                        <p class="text-lg font-bold">Total Price: ₹450</p>
+                                        <button class="w-full bg-amber-500 text-white font-bold py-2 px-4 rounded-lg mt-2 hover:bg-amber-600">
+                                            Book Entire Journey
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="feature-2-content" class="sub-content-section">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">Feature 2: Smart-Commute Mode Selector</h3>
+                                <span class="inline-block bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full mb-3">Strategic Pillar: Diversify / De-Risk</span>
+                                <p class="text-gray-700 mb-4">Replaces the simple "Bike | Auto | Cab" toggle with goal-oriented pills: "Cheapest," "Fastest," "Comfort." In high-risk cities (e.g., Bangalore), this allows us to algorithmically surface "Auto" as the "Cheapest" option, subtly nudging users away from at-risk bikes without negative messaging.</p>
+                                
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">User Journey (Rohan):</h4>
+                                <div class="w-full max-w-md mx-auto bg-gray-50 border border-gray-300 rounded-lg shadow-md p-4">
+                                    <h5 class="font-bold text-center text-lg mb-4">Book a Ride</h5>
+                                    <div class="mb-3">
+                                        <label class="block text-sm font-medium text-gray-700">From</label>
+                                        <input type="text" value="Your Location" disabled class="w-full p-2 bg-gray-200 border rounded-md">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700">To</label>
+                                        <input type="text" value="MG Road" disabled class="w-full p-2 bg-gray-200 border rounded-md">
+                                    </div>
+                                    
+                                    <h6 class="text-sm font-medium text-gray-700 mb-2">Choose your ride:</h6>
+                                    <div class="flex justify-around gap-2">
+                                        <button class="flex-1 text-center p-3 border-2 border-amber-500 bg-amber-50 rounded-lg">
+                                            <p class="font-bold">Cheapest</p>
+                                            <p class="text-sm">₹52 (Auto) 🛺</p>
+                                        </button>
+                                        <button class="flex-1 text-center p-3 border border-gray-300 bg-white rounded-lg">
+                                            <p class="font-bold">Fastest</p>
+                                            <p class="text-sm">₹68 (Bike) 🚲</p>
+                                        </button>
+                                        <button class="flex-1 text-center p-3 border border-gray-300 bg-white rounded-lg">
+                                            <p class="font-bold">Comfort</p>
+                                            <p class="text-sm">₹125 (Cab) 🚕</p>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-2 text-center">In this city, Auto is algorithmically shown as "Cheapest" to de-risk.</p>
+                                </div>
+                            </div>
+                            
+                            <div id="feature-3-content" class="sub-content-section">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">Feature 3: Rapido Mobility Pass</h3>
+                                <span class="inline-block bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full mb-3">Strategic Pillar: Own the Value Segment</span>
+                                <p class="text-gray-700 mb-4">A monthly subscription (e.g., ₹99/mo) offering a bundle of benefits across *all* verticals (Bikes, Autos, Cabs, Buses). This builds loyalty, creates predictable revenue, and incentivizes users to try our new Cab and Bus offerings.</p>
+                                
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">User Journey (Priya):</h4>
+                                <div class="w-full max-w-md mx-auto bg-gray-50 border border-gray-300 rounded-lg shadow-md p-6">
+                                    <h5 class="font-bold text-center text-xl text-amber-600 mb-2">Rapido Mobility Pass</h5>
+                                    <p class="text-center text-3xl font-bold mb-4">₹99 <span class="text-lg font-normal text-gray-600">/month</span></p>
+                                    
+                                    <ul class="space-y-3 mb-6">
+                                        <li class="flex items-center space-x-2">
+                                            <span class="text-green-500">✔</span>
+                                            <span class="text-gray-700"><strong>10% OFF</strong> all Bike/Auto rides</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <span class="text-green-500">✔</span>
+                                            <span class="text-gray-700"><strong>5% OFF</strong> all Cab rides</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <span class="text-green-500">✔</span>
+                                            <span class="text-gray-700"><strong>1 free cancellation</strong> on Intercity Bus bookings</span>
+                                        </li>
+                                    </ul>
+                                    
+                                    <button class="w-full bg-amber-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-600">
+                                        Get Your Pass
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="mvp-content" class="content-section">
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-3">MVP Scope & Hypotheses</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            We will test our strategy quickly by launching a minimal viable product (MVP) for each feature. This allows us to validate our core hypotheses with minimal engineering effort before scaling.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">MVP: Journey Planner</h3>
+                                <p class="text-gray-700">Partner with *one* bus aggregator. Only offer "First Mile (Bike/Auto) + Bus Ticket." Last-mile booking will be v2.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">MVP: Smart Selector</h3>
+                                <p class="text-gray-700">Launch with *manual* configuration. Ops team will set "Auto" as the "Cheapest" in Bangalore. The dynamic algorithm is v2.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">MVP: Mobility Pass</h3>
+                                <p class="text-gray-700">Launch *one* simple "Bike & Auto Pass" at ₹49/mo. Cab & Bus benefits will be v2. This tests the subscription appetite.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-3">Core Hypotheses for Validation</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            Our MVP launch is designed to validate these three hypotheses. Click on each to see its primary success metric.
+                        </p>
+                        <div class="space-y-3" id="hypothesis-list">
+                            <div class="hypothesis-item bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="font-semibold text-gray-800">H1: We hypothesize that users shown an integrated "Bike + Bus" journey will have a >5% conversion rate on the bus booking.</h3>
+                                <div class="hypothesis-metric mt-2 pt-2 border-t border-gray-200">
+                                    <strong class="text-amber-600">Success Metric:</strong> (Bus bookings via Planner) / (Journey Planner results shown).
+                                </div>
+                            </div>
+                            <div class="hypothesis-item bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="font-semibold text-gray-800">H2: We hypothesize that changing the default "Cheapest" ride to Auto in Bangalore will shift >15% of bike ride attempts to auto rides.</h3>
+                                <div class="hypothesis-metric mt-2 pt-2 border-t border-gray-200">
+                                    <strong class="text-amber-600">Success Metric:</strong> Modal Split % (Bike vs. Auto) in Bangalore, pre- and post-feature.
+                                </div>
+                            </div>
+                            <div class="hypothesis-item bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                <h3 class="font-semibold text-gray-800">H3: We hypothesize that we can achieve a 2% attach rate for the new Mobility Pass among monthly active users in the first 3 months.</h3>
+                                <div class="hypothesis-metric mt-2 pt-2 border-t border-gray-200">
+                                    <strong class="text-amber-600">Success Metric:</strong> Number of active pass subscribers / Monthly Active Users (MAU).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-3">Key Business Metrics to Track</h2>
+                        <p class="text-gray-700 leading-relaxed max-w-4xl mb-4">
+                            Beyond the MVP, we will track these key business goals to measure the overall success of our strategic pivot.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200 text-center">
+                                <h3 class="text-lg font-semibold text-gray-800">North Star Metric</h3>
+                                <p class="text-3xl font-bold text-amber-600 mt-2">Total Rides</p>
+                                <p class="text-gray-600">(All Verticals)</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200 text-center">
+                                <h3 class="text-lg font-semibold text-gray-800">De-risking</h3>
+                                <p class="text-3xl font-bold text-amber-600 mt-2">Revenue Mix %</p>
+                                <p class="text-gray-600">(Bike vs. Others)</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200 text-center">
+                                <h3 class="text-lg font-semibold text-gray-800">Integration</h3>
+                                <p class="text-3xl font-bold text-amber-600 mt-2">Cross-Adoption</p>
+                                <p class="text-gray-600">(Users of 2+ modes)</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200 text-center">
+                                <h3 class="text-lg font-semibold text-gray-800">Loyalty</h3>
+                                <p class="text-3xl font-bold text-amber-600 mt-2">User LTV</p>
+                                <p class="text-gray-600">(Avg. Revenue / User)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const mainTabs = document.querySelectorAll('.tab-button');
+            const mainContents = document.querySelectorAll('.content-section');
+            const competitorTabs = document.querySelectorAll('#market-content .sub-tab-button');
+            const competitorContents = document.querySelectorAll('#market-content .sub-content-section');
+            const featureTabs = document.querySelectorAll('#features-content .sub-tab-button');
+            const featureContents = document.querySelectorAll('#features-content .sub-content-section');
+            const hypothesisItems = document.querySelectorAll('.hypothesis-item');
+
+            function initTabs(tabs, contents) {
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const targetId = tab.dataset.subtab || tab.dataset.tab;
+                        
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        contents.forEach(content => {
+                            if (content.id === targetId + '-content') {
+                                content.classList.add('active');
+                            } else {
+                                content.classList.remove('active');
+                            }
+                        });
+                    });
+                });
+            }
+
+            initTabs(mainTabs, mainContents);
+            initTabs(competitorTabs, competitorContents);
+            initTabs(featureTabs, featureContents);
+
+            hypothesisItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
+
+            Chart.defaults.font.family = 'Inter';
+            Chart.defaults.font.weight = '500';
+
+            const revenueChartCtx = document.getElementById('revenueChart')?.getContext('2d');
+            if (revenueChartCtx) {
+                new Chart(revenueChartCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Current Revenue Mix', '12-Month Target'],
+                        datasets: [
+                            {
+                                label: 'Bike Taxi (At-Risk)',
+                                data: [70, 50],
+                                backgroundColor: '#fbbf24',
+                            },
+                            {
+                                label: 'Auto, Cab, Bus (Stable)',
+                                data: [30, 50],
+                                backgroundColor: '#3b82f6',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                stacked: true,
+                                max: 100,
+                                ticks: {
+                                    callback: (value) => value + '%'
+                                }
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Revenue Diversification Goal (Bike vs. Other Verticals)',
+                                font: { size: 16 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.dataset.label}: ${context.raw}%`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const marketChartCtx = document.getElementById('marketChart')?.getContext('2d');
+            if (marketChartCtx) {
+                new Chart(marketChartCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Urban Mobility (Intra-city)', 'Logistics (Parcel)', 'Intercity Travel (Bus)'],
+                        datasets: [{
+                            label: 'Market Segments',
+                            data: [65, 15, 20],
+                            backgroundColor: [
+                                '#f59e0b',
+                                '#10b981',
+                                '#3b82f6'
+                            ],
+                            borderColor: '#f8f9fa',
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.label}: ${context.raw}%`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
